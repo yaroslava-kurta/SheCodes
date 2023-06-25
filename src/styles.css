@@ -1,0 +1,118 @@
+body {
+  background: linear-gradient(to right, rgb(92, 97, 155), rgb(66, 67, 114));
+}
+
+ul {
+  padding: 0;
+}
+
+h1 {
+  font-size: 55px;
+  font-weight: 900;
+}
+
+.container {
+  background-color: #aab4e2af;
+  margin: 40px auto;
+  padding: 60px;
+  border: whitesmoke solid;
+  border-radius: 30px;
+  color: white;
+  font-family: "Roboto", sans-serif;
+  font-weight: 200;
+  max-width: 70%;
+}
+
+.main-title {
+  padding: 30px 0;
+}
+
+.degrees {
+  font-size: 36px;
+}
+
+.popular-cities a {
+  text-decoration: none;
+  color: rgb(66, 67, 114);
+}
+
+.popular-cities a:hover {
+  color: white;
+  cursor: pointer;
+}
+
+.popular-cities li {
+  font-weight: 900;
+  padding-left: 0;
+  margin-right: 30px;
+  transition: all 200ms ease-in-out;
+  display: inline;
+  text-decoration: none;
+}
+
+.button {
+  padding: 5px 20px;
+  width: 100%;
+  text-align: center;
+  background-color: rgba(0, 0, 139, 0);
+  color: white;
+  border: 1px solid white;
+  border-radius: 20px;
+  transition: all 200ms ease-in-out;
+}
+
+.button:hover {
+  background: linear-gradient(to top, rgb(92, 97, 155), rgb(66, 67, 114));
+  border: 1px solid rgba(245, 222, 179, 0);
+  cursor: pointer;
+}
+
+.temperature {
+  margin: 0 2px;
+  font-size: 80px;
+  font-weight: 700;
+}
+
+.weather-details li {
+  list-style-type: none;
+}
+
+.forecast-today {
+  text-align: center;
+}
+
+.forecast-today .image {
+  padding: 65px 0;
+  width: 150px;
+}
+
+.forecast {
+  margin: 10px 20px;
+  padding: 10px 0;
+  max-width: 12%;
+  border-radius: 30px;
+  text-align: center;
+  font-size: 20px;
+  background: linear-gradient(to top, rgb(92, 97, 155), rgb(66, 67, 114));
+}
+
+.image {
+  filter: invert(100%);
+}
+
+.footer {
+  text-align: center;
+  color: white;
+}
+
+#fahrenheit {
+  color: rgb(66, 67, 114);
+}
+
+#fahrenheit:hover {
+  cursor: pointer;
+}
+
+#celsius:hover {
+  cursor: pointer;
+}
