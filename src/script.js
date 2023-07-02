@@ -5,6 +5,7 @@ let celsius = document.querySelector("#celsius");
 let fahrenheit = document.querySelector("#fahrenheit");
 let mainTitle = document.querySelector("#main-title");
 let current = document.querySelector("#current-button");
+let icon = document.querySelector("#icon");
 
 function currentCityTemperature(event) {
   event.preventDefault();
