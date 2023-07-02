@@ -116,3 +116,7 @@ h1 {
 #celsius:hover {
   cursor: pointer;
 }
+
+#weather-description {
+  text-transform: capitalize;
+}

@@ -16,7 +16,14 @@ function currentCityTemperature(event) {
   }
 
   axios.get(apiUrl).then(function (response) {
+    let weatherDescription = document.querySelector("#weather-description");
+    let humidity = document.querySelector("#humidity");
+    let wind = document.querySelector("#wind");
     let currentTemp = Math.round(response.data.main.temp);
+
+    weatherDescription.innerHTML = response.data.weather[0].description;
+    humidity.innerHTML = response.data.main.humidity;
+    wind.innerHTML = Math.round(response.data.wind.speed);
     temperature.innerHTML = currentTemp;
   });
 }
