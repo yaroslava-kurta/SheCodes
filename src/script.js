@@ -23,6 +23,12 @@ function currentCityTemperature(event) {
   getWeather(apiUrl);
 }
 
+function search(city) {
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&&units=metric`;
+
+  getWeather(apiUrl);
+}
+
 function currentGeoposition(position) {
   let lat = position.coords.latitude;
   let lon = position.coords.longitude;
@@ -65,6 +71,10 @@ function renderCurrentTime() {
   ];
   let currentDay = days[now.getDay()];
   let currentHour = now.getHours();
+  if (currentHour < 10) {
+    currentHour = `0${currentHour}`;
+  }
+
   let currentMinutes = now.getMinutes();
 
   if (currentMinutes < 10) {
@@ -94,3 +104,4 @@ celsius.addEventListener("click", renderTemperature);
 fahrenheit.addEventListener("click", renderTemperature);
 current.addEventListener("click", renderCurrentPositionTemp);
 renderCurrentTime();
+search("Vancouver");
