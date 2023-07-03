@@ -105,6 +105,11 @@ h1 {
   color: white;
 }
 
+.git-url {
+  text-decoration: none;
+  color: white;
+}
+
 #fahrenheit {
   color: rgb(66, 67, 114);
 }
