@@ -5,7 +5,11 @@ let celsius = document.querySelector("#celsius");
 let fahrenheit = document.querySelector("#fahrenheit");
 let mainTitle = document.querySelector("#main-title");
 let current = document.querySelector("#current-button");
+let weatherDescription = document.querySelector("#weather-description");
+let humidity = document.querySelector("#humidity");
+let wind = document.querySelector("#wind");
 let icon = document.querySelector("#icon");
+let date = document.querySelector("#current-time");
 
 function currentCityTemperature(event) {
   event.preventDefault();
@@ -16,17 +20,7 @@ function currentCityTemperature(event) {
     mainTitle.innerHTML = `${inputValue}`;
   }
 
-  axios.get(apiUrl).then(function (response) {
-    let weatherDescription = document.querySelector("#weather-description");
-    let humidity = document.querySelector("#humidity");
-    let wind = document.querySelector("#wind");
-    let currentTemp = Math.round(response.data.main.temp);
-
-    weatherDescription.innerHTML = response.data.weather[0].description;
-    humidity.innerHTML = response.data.main.humidity;
-    wind.innerHTML = Math.round(response.data.wind.speed);
-    temperature.innerHTML = currentTemp;
-  });
+  getWeather(apiUrl);
 }
 
 function currentGeoposition(position) {
@@ -34,10 +28,23 @@ function currentGeoposition(position) {
   let lon = position.coords.longitude;
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&&units=metric`;
 
+  getWeather(apiUrl);
+}
+
+function getWeather(apiUrl) {
   axios.get(apiUrl).then(function (response) {
-    mainTitle.innerHTML = response.data.name;
     let currentTemp = Math.round(response.data.main.temp);
+    let iconPreview = response.data.weather[0].icon;
+
+    weatherDescription.innerHTML = response.data.weather[0].description;
+    humidity.innerHTML = response.data.main.humidity;
+    wind.innerHTML = Math.round(response.data.wind.speed);
+    mainTitle.innerHTML = response.data.name;
     temperature.innerHTML = currentTemp;
+    icon.setAttribute(
+      "src",
+      `https://openweathermap.org/img/wn/${iconPreview}@2x.png`
+    );
   });
 }
 
@@ -59,7 +66,11 @@ function renderCurrentTime() {
   let currentDay = days[now.getDay()];
   let currentHour = now.getHours();
   let currentMinutes = now.getMinutes();
-  let date = document.querySelector("#current-time");
+
+  if (currentMinutes < 10) {
+    currentMinutes = `0${currentMinutes}`;
+  }
+
   date.innerHTML = `${currentDay} ${currentHour}:${currentMinutes}`;
 }
 
