@@ -10,6 +10,7 @@ let humidity = document.querySelector("#humidity");
 let wind = document.querySelector("#wind");
 let icon = document.querySelector("#icon");
 let date = document.querySelector("#current-time");
+let celsiusTemperature = null;
 
 function currentCityTemperature(event) {
   event.preventDefault();
@@ -41,6 +42,8 @@ function getWeather(apiUrl) {
   axios.get(apiUrl).then(function (response) {
     let currentTemp = Math.round(response.data.main.temp);
     let iconPreview = response.data.weather[0].icon;
+
+    celsiusTemperature = Math.round(response.data.main.temp);
 
     weatherDescription.innerHTML = response.data.weather[0].description;
     humidity.innerHTML = response.data.main.humidity;
@@ -85,7 +88,6 @@ function renderCurrentTime() {
 }
 
 function renderTemperature(event) {
-  let celsiusTemperature = 20;
   let fahrenheitTemperature = Math.round((celsiusTemperature * 9) / 5 + 32);
 
   if (event.target.id === "fahrenheit") {
@@ -99,9 +101,37 @@ function renderTemperature(event) {
   }
 }
 
+function displayForecast() {
+  let forecastElement = document.querySelector("#weather-forecast-temp");
+  let forecastHTML = `<div class="row">`;
+  let days = ["Thru", "Fri", "Sat"];
+  days.forEach(function (day) {
+    forecastHTML =
+      forecastHTML +
+      `
+          <div class="col-2 forecast">
+            ${day}
+            <br />
+            <img
+              src="src/icons/partly cloudy.svg"
+              alt=""
+              width="30px"
+              class="image"
+            />
+            <br />
+            17/12&degC
+          </div>
+        `;
+  });
+
+  forecastHTML = forecastHTML + `</div>`;
+
+  forecastElement.innerHTML = forecastHTML;
+}
 yourCity.addEventListener("click", currentCityTemperature);
 celsius.addEventListener("click", renderTemperature);
 fahrenheit.addEventListener("click", renderTemperature);
 current.addEventListener("click", renderCurrentPositionTemp);
 renderCurrentTime();
 search("Vancouver");
+displayForecast();
