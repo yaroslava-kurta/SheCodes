@@ -31,9 +31,11 @@ function search(city) {
 }
 
 function currentGeoposition(position) {
-  let lat = position.coords.latitude;
-  let lon = position.coords.longitude;
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&&units=metric`;
+  let lon = coordinates.lon;
+  let lat = coordinates.lat;
+  let apiKey = "o502eec173b381a6d43908d85tfb7c97";
+  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?lon=${lon}&lat=${lat}&key=${apiKey}`;
+  console.log(apiUrl);
 
   getWeather(apiUrl);
 }
@@ -115,26 +117,41 @@ function renderTemperature(event) {
   }
 }
 
+function formatDay(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let day = date.getDay();
+  let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  console.log(day);
+
+  return days[day];
+}
+
 function displayForecast(response) {
-  console.log(response.data.daily);
+  let forecast = response.data.daily;
   let forecastElement = document.querySelector("#weather-forecast-temp");
   let forecastHTML = `<div class="row">`;
-  let days = ["Thru", "Fri", "Sat", "Sun", "Mon", "Tue"];
-  days.forEach(function (day) {
+
+  forecast.shift();
+
+  forecast.forEach(function (forecastDay) {
     forecastHTML =
       forecastHTML +
       `
           <div class="col-2 forecast">
-            ${day}
+            ${formatDay(forecastDay.time)}
             <br />
             <img
-              src="src/icons/partly cloudy.svg"
+              src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${
+                forecastDay.condition.icon
+              }.png"
               alt=""
-              width="30px"
+              width="60px"
               class="image"
             />
             <br />
-            17/12&degC
+            ${Math.round(forecastDay.temperature.maximum)}/${Math.round(
+        forecastDay.temperature.minimum
+      )}&degC
           </div>
         `;
   });
