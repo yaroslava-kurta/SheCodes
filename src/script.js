@@ -38,6 +38,18 @@ function currentGeoposition(position) {
   getWeather(apiUrl);
 }
 
+function getForecast(coordinates) {
+  console.log(coordinates);
+
+  let lon = coordinates.lon;
+  let lat = coordinates.lat;
+  let apiKey = "o502eec173b381a6d43908d85tfb7c97";
+  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?lon=${lon}&lat=${lat}&key=${apiKey}`;
+  console.log(apiUrl);
+
+  axios.get(apiUrl).then(displayForecast);
+}
+
 function getWeather(apiUrl) {
   axios.get(apiUrl).then(function (response) {
     let currentTemp = Math.round(response.data.main.temp);
@@ -54,6 +66,8 @@ function getWeather(apiUrl) {
       "src",
       `https://openweathermap.org/img/wn/${iconPreview}@2x.png`
     );
+
+    getForecast(response.data.coord);
   });
 }
 
@@ -101,10 +115,11 @@ function renderTemperature(event) {
   }
 }
 
-function displayForecast() {
+function displayForecast(response) {
+  console.log(response.data.daily);
   let forecastElement = document.querySelector("#weather-forecast-temp");
   let forecastHTML = `<div class="row">`;
-  let days = ["Thru", "Fri", "Sat"];
+  let days = ["Thru", "Fri", "Sat", "Sun", "Mon", "Tue"];
   days.forEach(function (day) {
     forecastHTML =
       forecastHTML +
@@ -128,10 +143,10 @@ function displayForecast() {
 
   forecastElement.innerHTML = forecastHTML;
 }
+
 yourCity.addEventListener("click", currentCityTemperature);
 celsius.addEventListener("click", renderTemperature);
 fahrenheit.addEventListener("click", renderTemperature);
 current.addEventListener("click", renderCurrentPositionTemp);
 renderCurrentTime();
 search("Vancouver");
-displayForecast();
