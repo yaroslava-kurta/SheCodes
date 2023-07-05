@@ -1,4 +1,4 @@
-let apiKey = "5a02abece27a6245bc39fc14eac7411f";
+let apiKey = "o502eec173b381a6d43908d85tfb7c97";
 let temperature = document.querySelector("#temperature-value");
 let yourCity = document.querySelector("#search-city-button");
 let celsius = document.querySelector("#celsius");
@@ -11,11 +11,12 @@ let wind = document.querySelector("#wind");
 let icon = document.querySelector("#icon");
 let date = document.querySelector("#current-time");
 let celsiusTemperature = null;
+let citiesList = document.querySelector("#popular-cities");
 
 function currentCityTemperature(event) {
   event.preventDefault();
   let inputValue = document.querySelector("#search-city").value;
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${inputValue}&appid=${apiKey}&&units=metric`;
+  let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${inputValue}&key=${apiKey}&units=metric`;
 
   if (inputValue !== "") {
     mainTitle.innerHTML = `${inputValue}`;
@@ -25,51 +26,53 @@ function currentCityTemperature(event) {
 }
 
 function search(city) {
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&&units=metric`;
+  let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
 
   getWeather(apiUrl);
 }
 
+function renderQuickSearchWeather(event) {
+  let cityValue = event.target.textContent;
+
+  search(cityValue);
+}
+
 function currentGeoposition(position) {
-  let lon = coordinates.lon;
-  let lat = coordinates.lat;
+  let lon = position.coords.longitude;
+  let lat = position.coords.latitude;
   let apiKey = "o502eec173b381a6d43908d85tfb7c97";
-  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?lon=${lon}&lat=${lat}&key=${apiKey}`;
-  console.log(apiUrl);
+  let apiUrl = `https://api.shecodes.io/weather/v1/current?lon=${lon}&lat=${lat}&key=${apiKey}`;
 
   getWeather(apiUrl);
 }
 
 function getForecast(coordinates) {
-  console.log(coordinates);
-
-  let lon = coordinates.lon;
-  let lat = coordinates.lat;
+  let lon = coordinates.longitude;
+  let lat = coordinates.latitude;
   let apiKey = "o502eec173b381a6d43908d85tfb7c97";
   let apiUrl = `https://api.shecodes.io/weather/v1/forecast?lon=${lon}&lat=${lat}&key=${apiKey}`;
-  console.log(apiUrl);
 
   axios.get(apiUrl).then(displayForecast);
 }
 
 function getWeather(apiUrl) {
   axios.get(apiUrl).then(function (response) {
-    let currentTemp = Math.round(response.data.main.temp);
-    let iconPreview = response.data.weather[0].icon;
+    let currentTemp = Math.round(response.data.temperature.current);
+    let iconPreview = response.data.condition.icon;
 
-    celsiusTemperature = Math.round(response.data.main.temp);
+    celsiusTemperature = Math.round(response.data.temperature.current);
 
-    weatherDescription.innerHTML = response.data.weather[0].description;
-    humidity.innerHTML = response.data.main.humidity;
+    weatherDescription.innerHTML = response.data.condition.description;
+    humidity.innerHTML = response.data.temperature.humidity;
     wind.innerHTML = Math.round(response.data.wind.speed);
-    mainTitle.innerHTML = response.data.name;
+    mainTitle.innerHTML = response.data.city;
     temperature.innerHTML = currentTemp;
     icon.setAttribute(
       "src",
-      `https://openweathermap.org/img/wn/${iconPreview}@2x.png`
+      `http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${iconPreview}.png`
     );
 
-    getForecast(response.data.coord);
+    getForecast(response.data.coordinates);
   });
 }
 
@@ -121,7 +124,6 @@ function formatDay(timestamp) {
   let date = new Date(timestamp * 1000);
   let day = date.getDay();
   let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  console.log(day);
 
   return days[day];
 }
@@ -165,5 +167,6 @@ yourCity.addEventListener("click", currentCityTemperature);
 celsius.addEventListener("click", renderTemperature);
 fahrenheit.addEventListener("click", renderTemperature);
 current.addEventListener("click", renderCurrentPositionTemp);
+citiesList.addEventListener("click", renderQuickSearchWeather);
 renderCurrentTime();
 search("Vancouver");
