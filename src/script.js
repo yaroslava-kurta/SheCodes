@@ -15,6 +15,8 @@ let citiesList = document.querySelector("#popular-cities");
 
 function currentCityTemperature(event) {
   event.preventDefault();
+  event.stopPropagation();
+
   let inputValue = document.querySelector("#search-city").value;
   let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${inputValue}&key=${apiKey}&units=metric`;
 
